@@ -1,0 +1,21 @@
+version: '2'
+services:
+    bookstorefrontend-cassandra:
+        container_name: bookstorefrontend-cassandra
+        image: cassandra:3.9
+        # volumes:
+        #     - ~/volumes/jhipster/BookStoreFrontend/cassandra/:/var/lib/cassandra/data
+        ports:
+            - 7000:7000
+            - 7001:7001
+            - 7199:7199
+            - 9042:9042
+            - 9160:9160
+    bookstorefrontend-cassandra-migration:
+        extends:
+            file: cassandra-migration.yml
+            service: bookstorefrontend-cassandra-migration
+        links:
+            - bookstorefrontend-cassandra
+        environment:
+            - CREATE_KEYSPACE_SCRIPT=create-keyspace.cql
