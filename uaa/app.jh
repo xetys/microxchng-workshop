@@ -1,0 +1,19 @@
+
+
+entity Customer {
+    streetName String,
+    streetNumber String,
+    postalCode String,
+    city String
+}
+
+entity User {
+
+}
+
+
+
+relationship OneToOne {
+    Customer{user} to User{customer}
+}
+

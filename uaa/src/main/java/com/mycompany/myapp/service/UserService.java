@@ -1,8 +1,10 @@
 package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.domain.Authority;
+import com.mycompany.myapp.domain.Customer;
 import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.AuthorityRepository;
+import com.mycompany.myapp.repository.CustomerRepository;
 import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.security.SecurityUtils;
@@ -36,10 +38,13 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final CustomerRepository customerRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CustomerRepository customerRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.customerRepository = customerRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -102,6 +107,7 @@ public class UserService {
         authorities.add(authority);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
+        customerRepository.save(new Customer().user(newUser));
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -131,6 +137,7 @@ public class UserService {
         user.setResetDate(ZonedDateTime.now());
         user.setActivated(true);
         userRepository.save(user);
+        customerRepository.save(new Customer().user(user));
         log.debug("Created Information for User: {}", user);
         return user;
     }
@@ -188,7 +195,7 @@ public class UserService {
         });
     }
 
-    @Transactional(readOnly = true)    
+    @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(UserDTO::new);
     }

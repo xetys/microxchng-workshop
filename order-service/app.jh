@@ -1,0 +1,56 @@
+
+entity Book {
+    title String required,
+    author String,
+    year Integer,
+    price Integer
+}
+
+entity Category {
+    title String required
+}
+
+entity Customer {
+    streetName String,
+    streetNumber String,
+    postalCode String,
+    city String
+}
+
+entity User {
+    
+}
+
+
+enum OrderStatus {
+    NEW,
+    PAYED,
+    SHIPPED
+}
+
+entity BookOrder {
+    status OrderStatus required
+}
+
+relationship ManyToOne {
+    Book{category} to Category
+
+}
+
+relationship OneToMany {
+    Customer{order} to BookOrder
+}
+
+relationship OneToOne {
+    Customer{user} to User{customer}
+}
+
+relationship ManyToMany {
+    BookOrder{book} to Book{order}
+}
+
+microservice OrderStatus with OrderService
+microservice BookOrder with OrderService
+microservice Customer with uaa
+microservice Book with BookService
+microservice Category with BookService
