@@ -1,0 +1,27 @@
+{
+    "monoApp": {
+        "customer" : {
+            "home": {
+                "title": "Customers",
+                "createLabel": "Create a new Customer",
+                "createOrEditLabel": "Create or edit a Customer",
+                "search": "Search for Customer"
+            },
+            "created": "A new Customer is created with identifier {{ param }}",
+            "updated": "A Customer is updated with identifier {{ param }}",
+            "deleted": "A Customer is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Customer {{ id }}?"
+            },
+            "detail": {
+                "title": "Customer"
+            },
+            "streetName": "Street Name",
+            "streetNumber": "Street Number",
+            "postalCode": "Postal Code",
+            "city": "City",
+            "user": "User",
+            "order": "Order"
+        }
+    }
+}

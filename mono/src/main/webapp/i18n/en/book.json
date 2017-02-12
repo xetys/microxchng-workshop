@@ -1,0 +1,27 @@
+{
+    "monoApp": {
+        "book" : {
+            "home": {
+                "title": "Books",
+                "createLabel": "Create a new Book",
+                "createOrEditLabel": "Create or edit a Book",
+                "search": "Search for Book"
+            },
+            "created": "A new Book is created with identifier {{ param }}",
+            "updated": "A Book is updated with identifier {{ param }}",
+            "deleted": "A Book is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Book {{ id }}?"
+            },
+            "detail": {
+                "title": "Book"
+            },
+            "title": "Title",
+            "author": "Author",
+            "year": "Year",
+            "price": "Price",
+            "category": "Category",
+            "order": "Order"
+        }
+    }
+}

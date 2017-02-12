@@ -18,7 +18,7 @@ entity Customer {
 }
 
 entity User {
-    
+
 }
 
 
@@ -49,8 +49,4 @@ relationship ManyToMany {
     BookOrder{book} to Book{order}
 }
 
-microservice OrderStatus with OrderService
-microservice BookOrder with OrderService
-microservice Customer with uaa
-microservice Book with BookService
-microservice Category with BookService
+

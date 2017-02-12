@@ -1,0 +1,37 @@
+
+<div *ngIf="bookOrder">
+    <h2><span jhiTranslate="monoApp.bookOrder.detail.title">Book Order</span> {{bookOrder.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row">
+        <dt><span jhiTranslate="monoApp.bookOrder.status">Status</span></dt>
+        <dd>
+            <span jhiTranslate="{{'monoApp.OrderStatus.' + bookOrder.status}}">{{bookOrder.status}}</span>
+        </dd>
+        <dt><span jhiTranslate="monoApp.bookOrder.customer">Customer</span></dt>
+        <dd>
+            <div *ngIf="bookOrder.customer">
+                <a [routerLink]="['customer', bookOrder.customer?.id]">{{bookOrder.customer?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="monoApp.bookOrder.book">Book</span></dt>
+        <dd>
+            <span *ngFor="let book of bookOrder.books; let last = last">
+                <a [routerLink]="['/book', book?.id ]">{{book.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'book-order/'+ bookOrder.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

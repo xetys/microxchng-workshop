@@ -1,0 +1,69 @@
+<div>
+    <h2><span jhiTranslate="monoApp.book.home.title">Books</span>
+        <button class="btn btn-primary float-xs-right create-book" [routerLink]="['/', { outlets: { popup: ['book-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="monoApp.book.home.createLabel">
+            Create new Book
+            </span>
+        </button></h2>
+    <jhi-alert></jhi-alert>
+
+    <div class="container-fluid">
+        <div class="row">
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="books">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="monoApp.book.title">Title</span></th>
+            <th><span jhiTranslate="monoApp.book.author">Author</span></th>
+            <th><span jhiTranslate="monoApp.book.year">Year</span></th>
+            <th><span jhiTranslate="monoApp.book.price">Price</span></th>
+            <th><span jhiTranslate="monoApp.book.category">Category</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let book of books ;trackBy: trackId">
+                <td><a [routerLink]="['../book', book.id ]">{{book.id}}</a></td>
+                <td>{{book.title}}</td>
+                <td>{{book.author}}</td>
+                <td>{{book.year}}</td>
+                <td>{{book.price}}</td>
+                <td>
+                    <div *ngIf="book.category">
+                        <a [routerLink]="['../category', book.category?.id ]" >{{book.category?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-xs-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../book', book.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'book/'+ book.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'book/'+ book.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

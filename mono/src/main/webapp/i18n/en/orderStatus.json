@@ -1,0 +1,10 @@
+{
+    "monoApp": {
+        "OrderStatus" : {
+            "null": "",
+            "NEW": "NEW",
+            "PAYED": "PAYED",
+            "SHIPPED": "SHIPPED"
+        }
+    }
+}

@@ -1,0 +1,41 @@
+
+<div *ngIf="customer">
+    <h2><span jhiTranslate="monoApp.customer.detail.title">Customer</span> {{customer.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row">
+        <dt><span jhiTranslate="monoApp.customer.streetName">Street Name</span></dt>
+        <dd>
+            <span>{{customer.streetName}}</span>
+        </dd>
+        <dt><span jhiTranslate="monoApp.customer.streetNumber">Street Number</span></dt>
+        <dd>
+            <span>{{customer.streetNumber}}</span>
+        </dd>
+        <dt><span jhiTranslate="monoApp.customer.postalCode">Postal Code</span></dt>
+        <dd>
+            <span>{{customer.postalCode}}</span>
+        </dd>
+        <dt><span jhiTranslate="monoApp.customer.city">City</span></dt>
+        <dd>
+            <span>{{customer.city}}</span>
+        </dd>
+        <dt><span jhiTranslate="monoApp.customer.user">User</span></dt>
+        <dd>
+            {{customer.user?.id}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'customer/'+ customer.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

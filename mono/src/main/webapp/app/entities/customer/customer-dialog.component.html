@@ -1,0 +1,58 @@
+
+
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+        <h4 class="modal-title" id="myCustomerLabel" jhiTranslate="monoApp.customer.home.createOrEditLabel">Create or edit a Customer</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!customer.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="customer.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="monoApp.customer.streetName" for="field_streetName">Street Name</label>
+            <input type="text" class="form-control" name="streetName" id="field_streetName"
+                [(ngModel)]="customer.streetName"
+             />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="monoApp.customer.streetNumber" for="field_streetNumber">Street Number</label>
+            <input type="text" class="form-control" name="streetNumber" id="field_streetNumber"
+                [(ngModel)]="customer.streetNumber"
+             />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="monoApp.customer.postalCode" for="field_postalCode">Postal Code</label>
+            <input type="text" class="form-control" name="postalCode" id="field_postalCode"
+                [(ngModel)]="customer.postalCode"
+             />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="monoApp.customer.city" for="field_city">City</label>
+            <input type="text" class="form-control" name="city" id="field_city"
+                [(ngModel)]="customer.city"
+             />
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="monoApp.customer.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="customer.user" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id === customer.user?.id ? customer.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,24 @@
+{
+    "monoApp": {
+        "bookOrder" : {
+            "home": {
+                "title": "Book Orders",
+                "createLabel": "Create a new Book Order",
+                "createOrEditLabel": "Create or edit a Book Order",
+                "search": "Search for Book Order"
+            },
+            "created": "A new Book Order is created with identifier {{ param }}",
+            "updated": "A Book Order is updated with identifier {{ param }}",
+            "deleted": "A Book Order is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Book Order {{ id }}?"
+            },
+            "detail": {
+                "title": "Book Order"
+            },
+            "status": "Status",
+            "customer": "Customer",
+            "book": "Book"
+        }
+    }
+}
