@@ -2,7 +2,9 @@ package com.mycompany.myapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 
+import com.mycompany.myapp.domain.Customer;
 import com.mycompany.myapp.domain.User;
+import com.mycompany.myapp.repository.CustomerRepository;
 import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.MailService;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.*;
 
 /**
@@ -39,13 +42,25 @@ public class AccountResource {
     private final UserService userService;
 
     private final MailService mailService;
+    private CustomerRepository customerRepository;
 
     public AccountResource(UserRepository userRepository, UserService userService,
-            MailService mailService) {
+                           MailService mailService, CustomerRepository customerRepository) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.customerRepository = customerRepository;
+    }
+
+    @GetMapping("/account/customer")
+    public ResponseEntity<Customer> getMyCustomer(Principal principal) {
+        return userService.getUserWithAuthoritiesByLogin(principal.getName())
+            .map(user -> customerRepository.findByUserId(user.getId()))
+            .map(customer -> customer.map(ResponseEntity::ok)
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND)))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
     }
 
     /**
