@@ -1,0 +1,69 @@
+<div>
+    <h2><span jhiTranslate="bookStoreBackendApp.bookOrder.home.title">Book Orders</span>
+        <button class="btn btn-primary float-xs-right create-book-order" [routerLink]="['/', { outlets: { popup: ['book-order-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="bookStoreBackendApp.bookOrder.home.createLabel">
+            Create new Book Order
+            </span>
+        </button></h2>
+    <jhi-alert></jhi-alert>
+
+    <div class="container-fluid">
+        <div class="row">
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="bookOrders">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="bookStoreBackendApp.bookOrder.status">Status</span></th>
+            <th><span jhiTranslate="bookStoreBackendApp.bookOrder.customer">Customer</span></th>
+            <th><span jhiTranslate="bookStoreBackendApp.bookOrder.book">Book</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let bookOrder of bookOrders ;trackBy: trackId">
+                <td><a [routerLink]="['../book-order', bookOrder.id ]">{{bookOrder.id}}</a></td>
+                <td jhiTranslate="{{'bookStoreBackendApp.OrderStatus.' + bookOrder.status}}">{{bookOrder.status}}</td>
+                <td>
+                    <div *ngIf="bookOrder.customer">
+                        <a [routerLink]="['../customer', bookOrder.customer?.id ]" >{{bookOrder.customer?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <span *ngFor="let book of bookOrder.books; let last = last">
+                            <a class="form-control-static" [routerLink]="['../book', book?.id ]">{{book.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-xs-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../book-order', bookOrder.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'book-order/'+ bookOrder.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'book-order/'+ bookOrder.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

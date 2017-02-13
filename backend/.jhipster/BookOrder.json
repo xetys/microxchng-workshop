@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "customer",
+            "otherEntityName": "customer",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "order",
+            "relationshipName": "book",
+            "otherEntityName": "book",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "status",
+            "fieldType": "OrderStatus",
+            "fieldValues": "NEW,PAYED,SHIPPED",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170213201912",
+    "entityTableName": "book_order",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "OrderService"
+}

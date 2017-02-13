@@ -1,0 +1,43 @@
+
+<div *ngIf="book">
+    <h2><span jhiTranslate="bookStoreBackendApp.book.detail.title">Book</span> {{book.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row">
+        <dt><span jhiTranslate="bookStoreBackendApp.book.title">Title</span></dt>
+        <dd>
+            <span>{{book.title}}</span>
+        </dd>
+        <dt><span jhiTranslate="bookStoreBackendApp.book.author">Author</span></dt>
+        <dd>
+            <span>{{book.author}}</span>
+        </dd>
+        <dt><span jhiTranslate="bookStoreBackendApp.book.year">Year</span></dt>
+        <dd>
+            <span>{{book.year}}</span>
+        </dd>
+        <dt><span jhiTranslate="bookStoreBackendApp.book.price">Price</span></dt>
+        <dd>
+            <span>{{book.price}}</span>
+        </dd>
+        <dt><span jhiTranslate="bookStoreBackendApp.book.category">Category</span></dt>
+        <dd>
+            <div *ngIf="book.category">
+                <a [routerLink]="['category', book.category?.id]">{{book.category?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'book/'+ book.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

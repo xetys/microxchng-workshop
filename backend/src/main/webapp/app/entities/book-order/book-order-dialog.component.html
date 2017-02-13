@@ -1,0 +1,54 @@
+
+
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+        <h4 class="modal-title" id="myBookOrderLabel" jhiTranslate="bookStoreBackendApp.bookOrder.home.createOrEditLabel">Create or edit a Book Order</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!bookOrder.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="bookOrder.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="bookStoreBackendApp.bookOrder.status" for="field_status">Status</label>
+            <select class="form-control" name="status" [(ngModel)]="bookOrder.status" id="field_status"  required>
+                <option value="NEW" jhiTranslate="bookStoreBackendApp.OrderStatus.NEW">NEW</option>
+                <option value="PAYED" jhiTranslate="bookStoreBackendApp.OrderStatus.PAYED">PAYED</option>
+                <option value="SHIPPED" jhiTranslate="bookStoreBackendApp.OrderStatus.SHIPPED">SHIPPED</option>
+            </select>
+            <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.status?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="bookStoreBackendApp.bookOrder.customer" for="field_customer">Customer</label>
+            <select class="form-control" id="field_customer" name="customer" [(ngModel)]="bookOrder.customer" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="customerOption.id === bookOrder.customer?.id ? bookOrder.customer : customerOption" *ngFor="let customerOption of customers; trackBy: trackCustomerById">{{customerOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="bookStoreBackendApp.bookOrder.book" for="field_book">Book</label>
+            <select class="form-control" id="field_book" #book="ngModel" multiple name="book" [(ngModel)]="bookOrder.books">
+                <option [ngValue]="getSelected(bookOrder.books, bookOption)" *ngFor="let bookOption of books; trackBy: trackBookById">{{bookOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
