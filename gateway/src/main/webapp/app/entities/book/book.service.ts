@@ -1,14 +1,27 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams, BaseRequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import {Injectable} from '@angular/core';
+import {Http, Response, URLSearchParams, BaseRequestOptions} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
+import {AlertService} from 'ng-jhipster';
 
-import { Book } from './book.model';
+import {Book} from './book.model';
+import {AccountService} from "../../shared/auth/account.service";
+import {Customer} from "../customer/customer.model";
 @Injectable()
 export class BookService {
 
     private resourceUrl = 'bookservice/api/books';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http) {
+    }
+
+
+    orderBook(book: Book, customer: Customer) {
+        return this.http.post('orderservice/api/book-orders', {
+            'status': 'NEW',
+            'customerId': customer.id,
+            'books': [book.id]
+        });
+    }
 
     create(book: Book): Observable<Book> {
         let copy: Book = Object.assign({}, book);
@@ -33,13 +46,12 @@ export class BookService {
     query(req?: any): Observable<Response> {
         let options = this.createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
-        ;
+            ;
     }
 
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
-
 
 
     private createRequestOption(req?: any): BaseRequestOptions {

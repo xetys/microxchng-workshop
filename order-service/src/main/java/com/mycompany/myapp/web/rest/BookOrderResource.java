@@ -85,7 +85,7 @@ public class BookOrderResource {
     @Timed
     public List<BookOrder> getAllBookOrders() {
         log.debug("REST request to get all BookOrders");
-        List<BookOrder> bookOrders = bookOrderRepository.findAll();
+        List<BookOrder> bookOrders = bookOrderRepository.findAllWithEagerRelationships();
         return bookOrders;
     }
 
@@ -99,7 +99,7 @@ public class BookOrderResource {
     @Timed
     public ResponseEntity<BookOrder> getBookOrder(@PathVariable Long id) {
         log.debug("REST request to get BookOrder : {}", id);
-        BookOrder bookOrder = bookOrderRepository.findOne(id);
+        BookOrder bookOrder = bookOrderRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bookOrder));
     }
 

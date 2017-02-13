@@ -1,6 +1,7 @@
 
 <div *ngIf="book">
     <h2><span jhiTranslate="bookStoreFrontendApp.book.detail.title">Book</span> {{book.id}}</h2>
+    <jhi-alert></jhi-alert>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row">
@@ -35,9 +36,8 @@
     </button>
 
     <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'book/'+ book.id + '/edit'} }]"
-            replaceUrl="true"
+            (click)="orderBook(book)"
             class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+        <span class="fa fa-pencil"></span>&nbsp;<span > Order</span>
     </button>
 </div>

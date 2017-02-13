@@ -24,7 +24,8 @@
         "book" : {
             "created": "A new Book is created with identifier {{ param }}",
             "updated": "A Book is updated with identifier {{ param }}",
-            "deleted": "A Book is deleted with identifier {{ param }}"
+            "deleted": "A Book is deleted with identifier {{ param }}",
+            "ordered": "Book ordered!"
         }
     }
 }

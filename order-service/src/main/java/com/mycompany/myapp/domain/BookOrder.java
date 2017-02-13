@@ -4,6 +4,8 @@ package com.mycompany.myapp.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import com.mycompany.myapp.domain.enumeration.OrderStatus;
@@ -26,6 +28,16 @@ public class BookOrder implements Serializable {
     @Column(name = "status", nullable = false)
     private OrderStatus status;
 
+    @NotNull
+    @Column(name = "customer_id", nullable = false)
+    private Long customerId;
+
+    @ManyToMany
+    @JoinTable(name = "book_order_order",
+               joinColumns = @JoinColumn(name="book_orders_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="orders_id", referencedColumnName="id"))
+    private Set<BookHolder> orders = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -45,6 +57,44 @@ public class BookOrder implements Serializable {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public BookOrder customerId(Long customerId) {
+        this.customerId = customerId;
+        return this;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Set<BookHolder> getOrders() {
+        return orders;
+    }
+
+    public BookOrder orders(Set<BookHolder> bookHolders) {
+        this.orders = bookHolders;
+        return this;
+    }
+
+    public BookOrder addOrder(BookHolder bookHolder) {
+        this.orders.add(bookHolder);
+        bookHolder.getBooks().add(this);
+        return this;
+    }
+
+    public BookOrder removeOrder(BookHolder bookHolder) {
+        this.orders.remove(bookHolder);
+        bookHolder.getBooks().remove(this);
+        return this;
+    }
+
+    public void setOrders(Set<BookHolder> bookHolders) {
+        this.orders = bookHolders;
     }
 
     @Override
@@ -72,6 +122,7 @@ public class BookOrder implements Serializable {
         return "BookOrder{" +
             "id=" + id +
             ", status='" + status + "'" +
+            ", customerId='" + customerId + "'" +
             '}';
     }
 }

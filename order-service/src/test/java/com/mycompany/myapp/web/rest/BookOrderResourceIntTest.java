@@ -43,6 +43,9 @@ public class BookOrderResourceIntTest {
     private static final OrderStatus DEFAULT_STATUS = OrderStatus.NEW;
     private static final OrderStatus UPDATED_STATUS = OrderStatus.PAYED;
 
+    private static final Long DEFAULT_CUSTOMER_ID = 1L;
+    private static final Long UPDATED_CUSTOMER_ID = 2L;
+
     @Autowired
     private BookOrderRepository bookOrderRepository;
 
@@ -80,7 +83,8 @@ public class BookOrderResourceIntTest {
      */
     public static BookOrder createEntity(EntityManager em) {
         BookOrder bookOrder = new BookOrder()
-                .status(DEFAULT_STATUS);
+                .status(DEFAULT_STATUS)
+                .customerId(DEFAULT_CUSTOMER_ID);
         return bookOrder;
     }
 
@@ -106,6 +110,7 @@ public class BookOrderResourceIntTest {
         assertThat(bookOrderList).hasSize(databaseSizeBeforeCreate + 1);
         BookOrder testBookOrder = bookOrderList.get(bookOrderList.size() - 1);
         assertThat(testBookOrder.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testBookOrder.getCustomerId()).isEqualTo(DEFAULT_CUSTOMER_ID);
     }
 
     @Test
@@ -148,6 +153,24 @@ public class BookOrderResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCustomerIdIsRequired() throws Exception {
+        int databaseSizeBeforeTest = bookOrderRepository.findAll().size();
+        // set the field null
+        bookOrder.setCustomerId(null);
+
+        // Create the BookOrder, which fails.
+
+        restBookOrderMockMvc.perform(post("/api/book-orders")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(bookOrder)))
+            .andExpect(status().isBadRequest());
+
+        List<BookOrder> bookOrderList = bookOrderRepository.findAll();
+        assertThat(bookOrderList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllBookOrders() throws Exception {
         // Initialize the database
         bookOrderRepository.saveAndFlush(bookOrder);
@@ -157,7 +180,8 @@ public class BookOrderResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(bookOrder.getId().intValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].customerId").value(hasItem(DEFAULT_CUSTOMER_ID.intValue())));
     }
 
     @Test
@@ -171,7 +195,8 @@ public class BookOrderResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(bookOrder.getId().intValue()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
+            .andExpect(jsonPath("$.customerId").value(DEFAULT_CUSTOMER_ID.intValue()));
     }
 
     @Test
@@ -192,7 +217,8 @@ public class BookOrderResourceIntTest {
         // Update the bookOrder
         BookOrder updatedBookOrder = bookOrderRepository.findOne(bookOrder.getId());
         updatedBookOrder
-                .status(UPDATED_STATUS);
+                .status(UPDATED_STATUS)
+                .customerId(UPDATED_CUSTOMER_ID);
 
         restBookOrderMockMvc.perform(put("/api/book-orders")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -204,6 +230,7 @@ public class BookOrderResourceIntTest {
         assertThat(bookOrderList).hasSize(databaseSizeBeforeUpdate);
         BookOrder testBookOrder = bookOrderList.get(bookOrderList.size() - 1);
         assertThat(testBookOrder.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testBookOrder.getCustomerId()).isEqualTo(UPDATED_CUSTOMER_ID);
     }
 
     @Test

@@ -7,6 +7,7 @@ import { ProfileService } from '../profiles/profile.service'; // FIXME barrel do
 import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
 
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
+import {AccountService} from "../../shared/auth/account.service";
 
 @Component({
     selector: 'jhi-navbar',
@@ -23,8 +24,10 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
+    customerId: number;
 
     constructor(
+        private accountService: AccountService,
         private loginService: LoginService,
         private languageHelper: JhiLanguageHelper,
         private languageService: JhiLanguageService,
@@ -46,6 +49,13 @@ export class NavbarComponent implements OnInit {
         this.profileService.getProfileInfo().subscribe(profileInfo => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
+        });
+
+        this.accountService.getCustomer().subscribe(customer => {
+            console.log('customer', customer);
+            this.customerId = customer.id!;
+
+            console.log('customerId', this.customerId);
         });
     }
 

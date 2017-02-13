@@ -7,8 +7,14 @@ enum OrderStatus {
 }
 
 entity BookOrder {
-    status OrderStatus required
+    status OrderStatus required,
+    customerId Long required
 }
 
+entity BookHolder {
+    bookId Long required
+}
 
-
+relationship ManyToMany {
+    BookOrder{book} to BookHolder{order}
+}

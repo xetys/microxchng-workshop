@@ -1,11 +1,27 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "book",
+            "relationshipName": "order",
+            "otherEntityName": "bookHolder",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
     "fields": [
         {
             "fieldName": "status",
             "fieldType": "OrderStatus",
             "fieldValues": "NEW,PAYED,SHIPPED",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "customerId",
+            "fieldType": "Long",
             "fieldValidateRules": [
                 "required"
             ]

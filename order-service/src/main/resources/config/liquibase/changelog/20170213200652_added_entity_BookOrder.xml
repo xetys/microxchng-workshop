@@ -26,8 +26,23 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="customer_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        
+        <createTable tableName="book_order_order">
+            <column name="orders_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_orders_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="book_orders_id, orders_id" tableName="book_order_order"/>
         
     </changeSet>
 </databaseChangeLog>

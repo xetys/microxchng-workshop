@@ -3,6 +3,7 @@ package com.mycompany.myapp.repository;
 import com.mycompany.myapp.domain.BookOrder;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -11,5 +12,11 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface BookOrderRepository extends JpaRepository<BookOrder,Long> {
+
+    @Query("select distinct bookOrder from BookOrder bookOrder left join fetch bookOrder.orders")
+    List<BookOrder> findAllWithEagerRelationships();
+
+    @Query("select bookOrder from BookOrder bookOrder left join fetch bookOrder.orders where bookOrder.id =:id")
+    BookOrder findOneWithEagerRelationships(@Param("id") Long id);
 
 }
