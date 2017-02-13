@@ -1,0 +1,26 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "book",
+            "otherEntityName": "bookOrder",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "order"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "bookId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170213223236",
+    "entityTableName": "book_holder",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}
