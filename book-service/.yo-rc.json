@@ -13,7 +13,7 @@
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
     "prodDatabaseType": "mysql",
-    "searchEngine": "elasticsearch",
+    "searchEngine": false,
     "messageBroker": false,
     "serviceDiscoveryType": "eureka",
     "buildTool": "gradle",
@@ -29,6 +29,7 @@
     "languages": [
       "en"
     ],
-    "clientPackageManager": "yarn"
+    "clientPackageManager": "yarn",
+    "clientFramework": "angular1"
   }
 }

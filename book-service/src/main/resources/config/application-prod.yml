@@ -51,10 +51,6 @@ spring:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
-    data:
-        elasticsearch:
-            cluster-name:
-            cluster-nodes: localhost:9300
     mail:
         host: localhost
         port: 25

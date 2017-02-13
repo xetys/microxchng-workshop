@@ -6,7 +6,6 @@ import com.mycompany.myapp.config.SecurityBeanOverrideConfiguration;
 
 import com.mycompany.myapp.domain.Book;
 import com.mycompany.myapp.repository.BookRepository;
-import com.mycompany.myapp.repository.search.BookSearchRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -55,9 +54,6 @@ public class BookResourceIntTest {
     private BookRepository bookRepository;
 
     @Autowired
-    private BookSearchRepository bookSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -73,7 +69,7 @@ public class BookResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            BookResource bookResource = new BookResource(bookRepository, bookSearchRepository);
+            BookResource bookResource = new BookResource(bookRepository);
         this.restBookMockMvc = MockMvcBuilders.standaloneSetup(bookResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -96,7 +92,6 @@ public class BookResourceIntTest {
 
     @Before
     public void initTest() {
-        bookSearchRepository.deleteAll();
         book = createEntity(em);
     }
 
@@ -120,10 +115,6 @@ public class BookResourceIntTest {
         assertThat(testBook.getAuthor()).isEqualTo(DEFAULT_AUTHOR);
         assertThat(testBook.getYear()).isEqualTo(DEFAULT_YEAR);
         assertThat(testBook.getPrice()).isEqualTo(DEFAULT_PRICE);
-
-        // Validate the Book in Elasticsearch
-        Book bookEs = bookSearchRepository.findOne(testBook.getId());
-        assertThat(bookEs).isEqualToComparingFieldByField(testBook);
     }
 
     @Test
@@ -211,7 +202,6 @@ public class BookResourceIntTest {
     public void updateBook() throws Exception {
         // Initialize the database
         bookRepository.saveAndFlush(book);
-        bookSearchRepository.save(book);
         int databaseSizeBeforeUpdate = bookRepository.findAll().size();
 
         // Update the book
@@ -235,10 +225,6 @@ public class BookResourceIntTest {
         assertThat(testBook.getAuthor()).isEqualTo(UPDATED_AUTHOR);
         assertThat(testBook.getYear()).isEqualTo(UPDATED_YEAR);
         assertThat(testBook.getPrice()).isEqualTo(UPDATED_PRICE);
-
-        // Validate the Book in Elasticsearch
-        Book bookEs = bookSearchRepository.findOne(testBook.getId());
-        assertThat(bookEs).isEqualToComparingFieldByField(testBook);
     }
 
     @Test
@@ -264,7 +250,6 @@ public class BookResourceIntTest {
     public void deleteBook() throws Exception {
         // Initialize the database
         bookRepository.saveAndFlush(book);
-        bookSearchRepository.save(book);
         int databaseSizeBeforeDelete = bookRepository.findAll().size();
 
         // Get the book
@@ -272,31 +257,9 @@ public class BookResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean bookExistsInEs = bookSearchRepository.exists(book.getId());
-        assertThat(bookExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Book> bookList = bookRepository.findAll();
         assertThat(bookList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchBook() throws Exception {
-        // Initialize the database
-        bookRepository.saveAndFlush(book);
-        bookSearchRepository.save(book);
-
-        // Search the book
-        restBookMockMvc.perform(get("/api/_search/books?query=id:" + book.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(book.getId().intValue())))
-            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
-            .andExpect(jsonPath("$.[*].author").value(hasItem(DEFAULT_AUTHOR.toString())))
-            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)));
     }
 
     @Test

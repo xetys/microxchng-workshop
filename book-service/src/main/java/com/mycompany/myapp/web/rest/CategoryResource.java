@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Category;
 
 import com.mycompany.myapp.repository.CategoryRepository;
-import com.mycompany.myapp.repository.search.CategorySearchRepository;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -17,10 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Category.
@@ -35,11 +30,8 @@ public class CategoryResource {
         
     private final CategoryRepository categoryRepository;
 
-    private final CategorySearchRepository categorySearchRepository;
-
-    public CategoryResource(CategoryRepository categoryRepository, CategorySearchRepository categorySearchRepository) {
+    public CategoryResource(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-        this.categorySearchRepository = categorySearchRepository;
     }
 
     /**
@@ -57,7 +49,6 @@ public class CategoryResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new category cannot already have an ID")).body(null);
         }
         Category result = categoryRepository.save(category);
-        categorySearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/categories/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,7 +71,6 @@ public class CategoryResource {
             return createCategory(category);
         }
         Category result = categoryRepository.save(category);
-        categorySearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, category.getId().toString()))
             .body(result);
@@ -124,25 +114,7 @@ public class CategoryResource {
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         log.debug("REST request to delete Category : {}", id);
         categoryRepository.delete(id);
-        categorySearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/categories?query=:query : search for the category corresponding
-     * to the query.
-     *
-     * @param query the query of the category search 
-     * @return the result of the search
-     */
-    @GetMapping("/_search/categories")
-    @Timed
-    public List<Category> searchCategories(@RequestParam String query) {
-        log.debug("REST request to search Categories for query {}", query);
-        return StreamSupport
-            .stream(categorySearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
-    }
-
 
 }

@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Book;
 
 import com.mycompany.myapp.repository.BookRepository;
-import com.mycompany.myapp.repository.search.BookSearchRepository;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -17,10 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Book.
@@ -35,11 +30,8 @@ public class BookResource {
         
     private final BookRepository bookRepository;
 
-    private final BookSearchRepository bookSearchRepository;
-
-    public BookResource(BookRepository bookRepository, BookSearchRepository bookSearchRepository) {
+    public BookResource(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.bookSearchRepository = bookSearchRepository;
     }
 
     /**
@@ -57,7 +49,6 @@ public class BookResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new book cannot already have an ID")).body(null);
         }
         Book result = bookRepository.save(book);
-        bookSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/books/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,7 +71,6 @@ public class BookResource {
             return createBook(book);
         }
         Book result = bookRepository.save(book);
-        bookSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, book.getId().toString()))
             .body(result);
@@ -124,25 +114,7 @@ public class BookResource {
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         log.debug("REST request to delete Book : {}", id);
         bookRepository.delete(id);
-        bookSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/books?query=:query : search for the book corresponding
-     * to the query.
-     *
-     * @param query the query of the book search 
-     * @return the result of the search
-     */
-    @GetMapping("/_search/books")
-    @Timed
-    public List<Book> searchBooks(@RequestParam String query) {
-        log.debug("REST request to search Books for query {}", query);
-        return StreamSupport
-            .stream(bookSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
-    }
-
 
 }

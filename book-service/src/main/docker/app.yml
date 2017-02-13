@@ -4,22 +4,16 @@ services:
         image: bookservice
         external_links:
             - bookservice-mysql:mysql
-            - bookservice-elasticsearch:elasticsearch
             - jhipster-registry:registry
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
             - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bookservice?useUnicode=true&characterEncoding=utf8&useSSL=false
             - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
-            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
     bookservice-mysql:
         extends:
             file: mysql.yml
             service: bookservice-mysql
-    bookservice-elasticsearch:
-        extends:
-            file: elasticsearch.yml
-            service: bookservice-elasticsearch
     jhipster-registry:
         extends:
             file: jhipster-registry.yml

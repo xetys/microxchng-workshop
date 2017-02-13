@@ -1,6 +1,5 @@
 package com.mycompany.myapp.domain;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -12,7 +11,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "category")
-@Document(indexName = "category")
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;

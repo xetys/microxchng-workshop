@@ -6,7 +6,6 @@ import com.mycompany.myapp.config.SecurityBeanOverrideConfiguration;
 
 import com.mycompany.myapp.domain.Category;
 import com.mycompany.myapp.repository.CategoryRepository;
-import com.mycompany.myapp.repository.search.CategorySearchRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,9 +45,6 @@ public class CategoryResourceIntTest {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private CategorySearchRepository categorySearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -64,7 +60,7 @@ public class CategoryResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            CategoryResource categoryResource = new CategoryResource(categoryRepository, categorySearchRepository);
+            CategoryResource categoryResource = new CategoryResource(categoryRepository);
         this.restCategoryMockMvc = MockMvcBuilders.standaloneSetup(categoryResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -84,7 +80,6 @@ public class CategoryResourceIntTest {
 
     @Before
     public void initTest() {
-        categorySearchRepository.deleteAll();
         category = createEntity(em);
     }
 
@@ -105,10 +100,6 @@ public class CategoryResourceIntTest {
         assertThat(categoryList).hasSize(databaseSizeBeforeCreate + 1);
         Category testCategory = categoryList.get(categoryList.size() - 1);
         assertThat(testCategory.getTitle()).isEqualTo(DEFAULT_TITLE);
-
-        // Validate the Category in Elasticsearch
-        Category categoryEs = categorySearchRepository.findOne(testCategory.getId());
-        assertThat(categoryEs).isEqualToComparingFieldByField(testCategory);
     }
 
     @Test
@@ -190,7 +181,6 @@ public class CategoryResourceIntTest {
     public void updateCategory() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
-        categorySearchRepository.save(category);
         int databaseSizeBeforeUpdate = categoryRepository.findAll().size();
 
         // Update the category
@@ -208,10 +198,6 @@ public class CategoryResourceIntTest {
         assertThat(categoryList).hasSize(databaseSizeBeforeUpdate);
         Category testCategory = categoryList.get(categoryList.size() - 1);
         assertThat(testCategory.getTitle()).isEqualTo(UPDATED_TITLE);
-
-        // Validate the Category in Elasticsearch
-        Category categoryEs = categorySearchRepository.findOne(testCategory.getId());
-        assertThat(categoryEs).isEqualToComparingFieldByField(testCategory);
     }
 
     @Test
@@ -237,7 +223,6 @@ public class CategoryResourceIntTest {
     public void deleteCategory() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
-        categorySearchRepository.save(category);
         int databaseSizeBeforeDelete = categoryRepository.findAll().size();
 
         // Get the category
@@ -245,28 +230,9 @@ public class CategoryResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean categoryExistsInEs = categorySearchRepository.exists(category.getId());
-        assertThat(categoryExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Category> categoryList = categoryRepository.findAll();
         assertThat(categoryList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchCategory() throws Exception {
-        // Initialize the database
-        categoryRepository.saveAndFlush(category);
-        categorySearchRepository.save(category);
-
-        // Search the category
-        restCategoryMockMvc.perform(get("/api/_search/categories?query=id:" + category.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(category.getId().intValue())))
-            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())));
     }
 
     @Test
