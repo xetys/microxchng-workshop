@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: application-config
+#common configuration shared between all applications
+data:
+  application.yml: |-
+    configserver:
+      name:  JHipster Registry
+      status: Connected to the JHipster Registry running in Kubernetes
+    eureka:
+      client:
+        serviceUrl:
+          # This must contain a list of all Eureka server replicas for registry HA to work correctly
+          defaultZone: http://admin:${jhipster.registry.password}@jhipster-registry-0.jhipster-registry.bookstore.svc.cluster.local:8761/eureka/,http://admin:${jhipster.registry.password}@jhipster-registry-1.jhipster-registry.bookstore.svc.cluster.local:8761/eureka/
+    jhipster:
+      security:
+        authentication:
+          jwt:
+            secret: 4d7fa34dc466c2fa25c3a98c64fc37d705748ba1
+  #application-prod.yml: |-
+  #  configserver:
+  #    status: Connected in prod

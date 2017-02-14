@@ -1,0 +1,17 @@
+{
+  "generator-jhipster": {
+    "appsFolders": [
+      "backend",
+      "book-service",
+      "gateway",
+      "order-service",
+      "uaa"
+    ],
+    "directoryPath": "../",
+    "serviceDiscoveryType": "eureka",
+    "jwtSecretKey": "4d7fa34dc466c2fa25c3a98c64fc37d705748ba1",
+    "dockerRepositoryName": "xetys",
+    "dockerPushCommand": "docker push",
+    "kubernetesNamespace": "bookstore"
+  }
+}
