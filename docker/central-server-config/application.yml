@@ -1,0 +1,23 @@
+#common configuration shared between all applications
+configserver:
+    name: Docker JHipster Registry
+    status: Connected to the JHipster Registry running in Docker
+
+jhipster:
+    security:
+        authentication:
+            jwt:
+                secret: 6fc94e11ea02e9bec58f117c9487a1850b88cb0b
+    logging:
+        logstash: # forward logs to ELK
+            enabled: true
+            host: jhipster-logstash
+    metrics:
+        logs: # report metrics in the logs
+            enabled: true
+            reportFrequency: 60 # in seconds
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://admin:${jhipster.registry.password}@registry:8761/eureka/

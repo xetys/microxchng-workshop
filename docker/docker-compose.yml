@@ -1,0 +1,136 @@
+version: '2'
+services:
+    bookstorebackend-app:
+        image: bookstorebackend
+        external_links:
+            - bookstorebackend-mysql:mysql
+            - jhipster-registry:registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bookstorebackend?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - SPRING_DATA_CASSANDRA_CONTACTPOINTS=cassandra
+            - JHIPSTER_SLEEP=80
+            - JHIPSTER_REGISTRY_PASSWORD=admin
+        ports:
+            - 9090:9090
+    bookstorebackend-mysql:
+        container_name: bookstorebackend-mysql
+        image: mysql:5.7.13
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_DATABASE=bookstorebackend
+        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8
+    
+    bookservice-app:
+        image: bookservice
+        external_links:
+            - bookservice-mysql:mysql
+            - jhipster-registry:registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bookservice?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10
+            - JHIPSTER_REGISTRY_PASSWORD=admin
+    bookservice-mysql:
+        container_name: bookservice-mysql
+        image: mysql:5.7.13
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_DATABASE=bookservice
+        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8
+    
+    bookstorefrontend-app:
+        image: bookstorefrontend
+        external_links:
+            - bookstorefrontend-mysql:mysql
+            - jhipster-registry:registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bookstorefrontend?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - SPRING_DATA_CASSANDRA_CONTACTPOINTS=cassandra
+            - JHIPSTER_SLEEP=80
+            - JHIPSTER_REGISTRY_PASSWORD=admin
+        ports:
+            - 8080:8080
+    bookstorefrontend-mysql:
+        container_name: bookstorefrontend-mysql
+        image: mysql:5.7.13
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_DATABASE=bookstorefrontend
+        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8
+    
+    orderaggregateservice-app:
+        image: orderaggregateservice
+        external_links:
+            - jhipster-registry:registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
+            - JHIPSTER_SLEEP=10
+            - JHIPSTER_REGISTRY_PASSWORD=admin
+    
+    orderservice-app:
+        image: orderservice
+        external_links:
+            - orderservice-mysql:mysql
+            - jhipster-registry:registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/orderservice?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10
+            - JHIPSTER_REGISTRY_PASSWORD=admin
+    orderservice-mysql:
+        container_name: orderservice-mysql
+        image: mysql:5.7.13
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_DATABASE=orderservice
+        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8
+    
+    uaa-app:
+        image: uaa
+        external_links:
+            - uaa-mysql:mysql
+            - jhipster-registry:registry
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@registry:8761/config
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/uaa?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10
+            - JHIPSTER_REGISTRY_PASSWORD=admin
+    uaa-mysql:
+        container_name: uaa-mysql
+        image: mysql:5.7.13
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_DATABASE=uaa
+        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8
+    
+    jhipster-registry:
+        extends:
+            file: jhipster-registry.yml
+            service: jhipster-registry
+
+    jhipster-elasticsearch:
+        extends:
+            file: jhipster-console.yml
+            service: jhipster-elasticsearch
+    jhipster-logstash:
+        extends:
+          file: jhipster-console.yml
+          service: jhipster-logstash
+    jhipster-console:
+        extends:
+            file: jhipster-console.yml
+            service: jhipster-console
+

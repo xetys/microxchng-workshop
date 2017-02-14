@@ -1,0 +1,17 @@
+{
+  "generator-jhipster": {
+    "appsFolders": [
+      "backend",
+      "book-service",
+      "gateway",
+      "order-aggregate-service",
+      "order-service",
+      "uaa"
+    ],
+    "directoryPath": "../",
+    "monitoring": "elk",
+    "serviceDiscoveryType": "eureka",
+    "adminPassword": "admin",
+    "jwtSecretKey": "6fc94e11ea02e9bec58f117c9487a1850b88cb0b"
+  }
+}
