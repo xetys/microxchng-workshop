@@ -3,10 +3,10 @@
     "relationships": [
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "book",
+            "relationshipName": "order",
             "otherEntityName": "bookOrder",
             "ownerSide": false,
-            "otherEntityRelationshipName": "order"
+            "otherEntityRelationshipName": "book"
         }
     ],
     "fields": [

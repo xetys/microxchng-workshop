@@ -19,7 +19,7 @@ export class BookService {
         return this.http.post('orderservice/api/book-orders', {
             'status': 'NEW',
             'customerId': customer.id,
-            'books': [book.id]
+            'books': [{ "bookId": book.id }]
         });
     }
 

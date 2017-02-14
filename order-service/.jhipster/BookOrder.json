@@ -3,8 +3,8 @@
     "relationships": [
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "book",
-            "relationshipName": "order",
+            "otherEntityRelationshipName": "order",
+            "relationshipName": "book",
             "otherEntityName": "bookHolder",
             "otherEntityField": "id",
             "ownerSide": true

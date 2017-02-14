@@ -9,13 +9,13 @@
     <changeSet id="20170213200652-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="book_orders_id"
-                                 baseTableName="book_order_order"
-                                 constraintName="fk_book_order_order_book_orders_id"
+                                 baseTableName="book_order_book"
+                                 constraintName="fk_book_order_book_book_orders_id"
                                  referencedColumnNames="id"
                                  referencedTableName="book_order"/>
-        <addForeignKeyConstraint baseColumnNames="orders_id"
-                                 baseTableName="book_order_order"
-                                 constraintName="fk_book_order_order_orders_id"
+        <addForeignKeyConstraint baseColumnNames="books_id"
+                                 baseTableName="book_order_book"
+                                 constraintName="fk_book_order_book_books_id"
                                  referencedColumnNames="id"
                                  referencedTableName="book_holder"/>
         

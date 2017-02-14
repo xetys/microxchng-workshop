@@ -33,8 +33,8 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
-        <createTable tableName="book_order_order">
-            <column name="orders_id" type="bigint">
+        <createTable tableName="book_order_book">
+            <column name="books_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="book_orders_id" type="bigint">
@@ -42,7 +42,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="book_orders_id, orders_id" tableName="book_order_order"/>
+        <addPrimaryKey columnNames="book_orders_id, books_id" tableName="book_order_book"/>
         
     </changeSet>
 </databaseChangeLog>

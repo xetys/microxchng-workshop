@@ -29,6 +29,7 @@
     "languages": [
       "en"
     ],
-    "clientPackageManager": "yarn"
+    "clientPackageManager": "yarn",
+    "clientFramework": "angular1"
   }
 }

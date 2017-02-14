@@ -32,11 +32,11 @@ public class BookOrder implements Serializable {
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
-    @ManyToMany
-    @JoinTable(name = "book_order_order",
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "book_order_book",
                joinColumns = @JoinColumn(name="book_orders_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="orders_id", referencedColumnName="id"))
-    private Set<BookHolder> orders = new HashSet<>();
+               inverseJoinColumns = @JoinColumn(name="books_id", referencedColumnName="id"))
+    private Set<BookHolder> books = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -72,29 +72,29 @@ public class BookOrder implements Serializable {
         this.customerId = customerId;
     }
 
-    public Set<BookHolder> getOrders() {
-        return orders;
+    public Set<BookHolder> getBooks() {
+        return books;
     }
 
-    public BookOrder orders(Set<BookHolder> bookHolders) {
-        this.orders = bookHolders;
+    public BookOrder books(Set<BookHolder> bookHolders) {
+        this.books = bookHolders;
         return this;
     }
 
-    public BookOrder addOrder(BookHolder bookHolder) {
-        this.orders.add(bookHolder);
-        bookHolder.getBooks().add(this);
+    public BookOrder addBook(BookHolder bookHolder) {
+        this.books.add(bookHolder);
+        bookHolder.getOrders().add(this);
         return this;
     }
 
-    public BookOrder removeOrder(BookHolder bookHolder) {
-        this.orders.remove(bookHolder);
-        bookHolder.getBooks().remove(this);
+    public BookOrder removeBook(BookHolder bookHolder) {
+        this.books.remove(bookHolder);
+        bookHolder.getOrders().remove(this);
         return this;
     }
 
-    public void setOrders(Set<BookHolder> bookHolders) {
-        this.orders = bookHolders;
+    public void setBooks(Set<BookHolder> bookHolders) {
+        this.books = bookHolders;
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.mycompany.myapp.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by on 14.02.17.
  *
@@ -11,6 +14,8 @@ public class Order {
     private OrderStatus status;
 
     private Long customerId;
+
+    private List<BookHolder> books = new ArrayList<>();
 
     public Order() {
     }
@@ -38,4 +43,13 @@ public class Order {
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
+
+    public List<BookHolder> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<BookHolder> books) {
+        this.books = books;
+    }
+
 }

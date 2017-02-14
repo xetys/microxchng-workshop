@@ -26,9 +26,9 @@ public class BookHolder implements Serializable {
     @Column(name = "book_id", nullable = false)
     private Long bookId;
 
-    @ManyToMany(mappedBy = "orders")
+    @ManyToMany(mappedBy = "books")
     @JsonIgnore
-    private Set<BookOrder> books = new HashSet<>();
+    private Set<BookOrder> orders = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -51,29 +51,29 @@ public class BookHolder implements Serializable {
         this.bookId = bookId;
     }
 
-    public Set<BookOrder> getBooks() {
-        return books;
+    public Set<BookOrder> getOrders() {
+        return orders;
     }
 
-    public BookHolder books(Set<BookOrder> bookOrders) {
-        this.books = bookOrders;
+    public BookHolder orders(Set<BookOrder> bookOrders) {
+        this.orders = bookOrders;
         return this;
     }
 
-    public BookHolder addBook(BookOrder bookOrder) {
-        this.books.add(bookOrder);
-        bookOrder.getOrders().add(this);
+    public BookHolder addOrder(BookOrder bookOrder) {
+        this.orders.add(bookOrder);
+        bookOrder.getBooks().add(this);
         return this;
     }
 
-    public BookHolder removeBook(BookOrder bookOrder) {
-        this.books.remove(bookOrder);
-        bookOrder.getOrders().remove(this);
+    public BookHolder removeOrder(BookOrder bookOrder) {
+        this.orders.remove(bookOrder);
+        bookOrder.getBooks().remove(this);
         return this;
     }
 
-    public void setBooks(Set<BookOrder> bookOrders) {
-        this.books = bookOrders;
+    public void setOrders(Set<BookOrder> bookOrders) {
+        this.orders = bookOrders;
     }
 
     @Override
