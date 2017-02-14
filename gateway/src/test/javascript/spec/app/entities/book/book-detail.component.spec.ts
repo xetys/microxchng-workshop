@@ -12,6 +12,8 @@ import { MockActivatedRoute } from '../../../helpers/mock-route.service';
 import { BookDetailComponent } from '../../../../../../main/webapp/app/entities/book/book-detail.component';
 import { BookService } from '../../../../../../main/webapp/app/entities/book/book.service';
 import { Book } from '../../../../../../main/webapp/app/entities/book/book.model';
+import {AccountService} from "../../../../../../main/webapp/app/shared/auth/account.service";
+import { AlertService } from  'ng-jhipster';
 
 describe('Component Tests', () => {
 
@@ -44,7 +46,9 @@ describe('Component Tests', () => {
                         provide: JhiLanguageService,
                         useClass: MockLanguageService
                     },
-                    BookService
+                    BookService,
+                    AccountService,
+                    AlertService
                 ]
             }).overrideComponent(BookDetailComponent, {
                 set: {
@@ -60,19 +64,6 @@ describe('Component Tests', () => {
         });
 
 
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
-            // GIVEN
-            spyOn(service, 'find').and.returnValue(Observable.of(new Book(10)));
-
-            // WHEN
-            comp.ngOnInit();
-
-            // THEN
-            expect(service.find).toHaveBeenCalledWith(123);
-            expect(comp.book).toEqual(jasmine.objectContaining({id:10}));
-            });
-        });
     });
 
 });

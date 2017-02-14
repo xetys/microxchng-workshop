@@ -4,6 +4,7 @@ import com.mycompany.myapp.UaaApp;
 import com.mycompany.myapp.domain.Authority;
 import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.AuthorityRepository;
+import com.mycompany.myapp.repository.CustomerRepository;
 import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.service.MailService;
@@ -47,6 +48,9 @@ public class AccountResourceIntTest {
 
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private UserService userService;
