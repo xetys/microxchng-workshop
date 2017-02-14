@@ -16,9 +16,7 @@ public class Customer {
 
     private String city;
 
-    private String firstName;
-
-    private String lastName;
+    private User user;
 
     public Customer() {
     }
@@ -63,19 +61,11 @@ public class Customer {
         this.city = city;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public User getUser() {
+        return user;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
