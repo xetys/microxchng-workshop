@@ -52,10 +52,7 @@ export class NavbarComponent implements OnInit {
         });
 
         this.accountService.getCustomer().subscribe(customer => {
-            console.log('customer', customer);
             this.customerId = customer.id!;
-
-            console.log('customerId', this.customerId);
         });
     }
 
