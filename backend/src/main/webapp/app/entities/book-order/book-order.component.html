@@ -35,7 +35,7 @@
                 </td>
                 <td>
                     <span *ngFor="let book of bookOrder.books; let last = last">
-                            <a class="form-control-static" [routerLink]="['../book', book?.id ]">{{book.id}}</a>{{last ? '' : ', '}}
+                            <a class="form-control-static" [routerLink]="['../book', book?.id ]">{{book.title}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-xs-right">

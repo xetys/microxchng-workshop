@@ -17,6 +17,11 @@ export class BookOrderService {
         });
     }
 
+    getAggregate() {
+        return this.http.get('/orderaggregateservice/api/orders')
+            .map(response => response.json());
+    }
+
     update(bookOrder: BookOrder): Observable<BookOrder> {
         let copy: BookOrder = Object.assign({}, bookOrder);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {

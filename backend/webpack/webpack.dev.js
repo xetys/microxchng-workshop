@@ -22,6 +22,9 @@ module.exports = webpackMerge(commonConfig({env: ENV}), {
             context: [
                 '/uaa',
                 '/api',
+                '/orderservice',
+                '/orderaggregateservice',
+                '/bookservice',
                 '/management',
                 '/swagger-resources',
                 '/v2/api-docs',

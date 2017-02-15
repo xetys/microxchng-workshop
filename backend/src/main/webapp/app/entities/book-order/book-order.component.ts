@@ -29,12 +29,8 @@ bookOrders: BookOrder[];
     }
 
     loadAll() {
-        this.bookOrderService.query().subscribe(
-            (res: Response) => {
-                this.bookOrders = res.json();
-            },
-            (res: Response) => this.onError(res.json())
-        );
+        this.bookOrderService.getAggregate()
+            .subscribe((bookOrders) => this.bookOrders = bookOrders);
     }
     ngOnInit() {
         this.loadAll();
